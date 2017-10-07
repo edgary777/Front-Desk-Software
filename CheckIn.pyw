@@ -17,7 +17,7 @@ class CheckIn(QDialog):
         # Definiciones de las paginas
 
         search = Search()
-        p1 = Page1()
+        p1 = PersonalData()
 
         #######################################################################
         #######################################################################
@@ -38,8 +38,8 @@ class CheckIn(QDialog):
         # Setup del layout
 
         layout = QHBoxLayout()
-        layout.addLayout(self.abstractLayout, 2)
-        layout.addLayout(self.mainLayout, 9)
+        layout.addLayout(self.abstractLayout, 1)
+        layout.addLayout(self.mainLayout, 3)
 
         self.setLayout(layout)
 
@@ -95,7 +95,7 @@ class Search(QWidget):
         self.setLayout(layout)
 
 
-class Page1(QWidget):
+class PersonalData(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -115,7 +115,8 @@ class Page1(QWidget):
                    "surnameM": "Appellido Materno", "street": "Calle",
                    "extNo": "No. Ext", "intNo": "No. Int",
                    "district": "Colonia", "county": "Municipio",
-                   "state": "Estado", "country": "País", "phone": "Teléfono"}
+                   "state": "Estado", "country": "País", "phone": "Teléfono",
+                   "email": "E-Mail"}
 
         for key, value in varDict.items():
             # Input field is created
@@ -140,6 +141,15 @@ class Page1(QWidget):
         #######################################################################
         # Layout setup
 
+        self.btnNext = QPushButton("Siguiente")
+        btnLayout = QHBoxLayout()
+        btnLayout.addStretch()
+        btnLayout.addWidget(self.btnNext)
+
+        #######################################################################
+        #######################################################################
+        # Layout setup
+
         l1 = QHBoxLayout()
         l1.addLayout(self.nameLayout)
         l1.addLayout(self.surnameFLayout)
@@ -153,14 +163,16 @@ class Page1(QWidget):
         l2.addLayout(self.districtLayout, 4)
 
         l3 = QHBoxLayout()
-        l3.addLayout(self.countyLayout)
-        l3.addLayout(self.stateLayout)
-        l3.addLayout(self.countryLayout)
+        l3.addLayout(self.countyLayout, 2)
+        l3.addLayout(self.stateLayout, 2)
+        l3.addLayout(self.countryLayout, 2)
+        l3.addLayout(self.emailLayout, 5)
 
         layout = QVBoxLayout()
         layout.addLayout(l1)
         layout.addLayout(l2)
         layout.addLayout(l3)
+        layout.addLayout(btnLayout)
 
         self.setLayout(layout)
 
@@ -169,15 +181,3 @@ app = QApplication(sys.argv)
 window = CheckIn()
 window.show()
 sys.exit(app.exec_())
-
-# occupation = QLineEdit()
-# occupationLabel = QLabel("Ocupación")
-#
-# iD = QLineEdit()
-# iDLabel = QLabel("Identificación")
-#
-# idNo = QLineEdit()
-# idNoLabel = QLabel("No. de identificación")
-#
-# email = QLineEdit()
-# emailLabel = QLabel("E-mail")
