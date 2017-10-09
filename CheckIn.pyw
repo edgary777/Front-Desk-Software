@@ -24,6 +24,24 @@ class CheckIn(QDialog):
 
         #######################################################################
         #######################################################################
+        # Setup de botones Next/Previous
+
+        p1n = p1.btnNext
+        p2n = p2.btnNext
+        p2p = p2.btnPrevious
+        p3p = p3.btnPrevious
+
+        p1n.clicked.connect(self.nextPage)
+        p2n.clicked.connect(self.nextPage)
+        p2p.clicked.connect(self.previousPage)
+        p3p.clicked.connect(self.previousPage)
+
+        cancelSearch = search.exit
+
+        cancelSearch.clicked.connect(self.cancel)
+
+        #######################################################################
+        #######################################################################
         # Setup de mainLayout
 
         self.mainLayout = QStackedLayout()
@@ -57,13 +75,13 @@ class CheckIn(QDialog):
         Functions.center(self)
 
     def nextPage(self):
-        self.layout.setCurrentIndex(self.layout.currentIndex + 1)
+        self.mainLayout.setCurrentIndex(self.mainLayout.currentIndex() + 1)
 
     def previousPage(self):
-        self.layout.setCurrentIndex(self.layout.currentIndex - 1)
+        self.mainLayout.setCurrentIndex(self.mainLayout.currentIndex() - 1)
 
     def cancel(self):
-        pass
+        QDialog.accept(self)
 
 
 class Search(QWidget):
@@ -83,7 +101,7 @@ class Search(QWidget):
         phoneSearch = QPushButton("Buscar por Teléfono")
         idSearch = QPushButton("Buscar por ID")
 
-        exit = QPushButton("Cancelar")
+        self.exit = QPushButton("Cancelar")
 
         #######################################################################
         #######################################################################
@@ -96,7 +114,7 @@ class Search(QWidget):
         layout.addWidget(phoneSearch)
         layout.addWidget(idSearch)
         layout.addStretch()
-        layout.addWidget(exit)
+        layout.addWidget(self.exit)
 
         self.setLayout(layout)
 
@@ -234,8 +252,8 @@ class VariantData(QWidget):
         self.btnPrevious = QPushButton("Anterior")
 
         btnLayout = QHBoxLayout()
-        btnLayout.addStretch()
         btnLayout.addWidget(self.btnPrevious)
+        btnLayout.addStretch()
         btnLayout.addWidget(self.btnNext)
 
         #######################################################################
@@ -266,6 +284,7 @@ class VariantData(QWidget):
         layout.addLayout(l2)
         layout.addLayout(l3)
         layout.addLayout(l4)
+        layout.addStretch()
         layout.addLayout(btnLayout)
 
         self.setLayout(layout)
@@ -319,8 +338,8 @@ class InvoiceData(QWidget):
 
         self.btnPrevious = QPushButton("Anterior")
         btnLayout = QHBoxLayout()
-        btnLayout.addStretch()
         btnLayout.addWidget(self.btnPrevious)
+        btnLayout.addStretch()
 
         #######################################################################
         #######################################################################
@@ -350,6 +369,7 @@ class InvoiceData(QWidget):
         layout.addLayout(l2)
         layout.addLayout(l3)
         layout.addLayout(l4)
+        layout.addStretch()
         layout.addLayout(btnLayout)
 
         self.setLayout(layout)
