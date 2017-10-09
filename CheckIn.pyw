@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import Functions
 
 
@@ -17,6 +18,7 @@ class CheckIn(QDialog):
         # Definiciones de las paginas
 
         search = Search()
+        summary = Summary()
         p0 = EmptyWidget()
         p1 = PersonalData()
         p2 = VariantData()
@@ -55,6 +57,7 @@ class CheckIn(QDialog):
         # Setup de abstractLayout
 
         self.abstractLayout = QStackedLayout()
+        self.abstractLayout.addWidget(summary)
         self.abstractLayout.addWidget(search)
 
         #######################################################################
@@ -71,7 +74,7 @@ class CheckIn(QDialog):
         #######################################################################
         # configuración de la ventana
 
-        self.resize(1000, 500)
+        self.resize(1000, 600)
         Functions.center(self)
 
     def nextPage(self):
@@ -379,32 +382,99 @@ class EmptyWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+
+class Summary(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.initUi()
+
+    def initUi(self):
+
+        #######################################################################
+        #######################################################################
+        # Setup de los botones
+
+        varDict = {"arrival": "Llegada", "departure": "Salida",
+                   "room": "Cuarto", "name": "Nombre", "street": "Calle",
+                   "extNo": "No. Ext", "intNo": "No. Int",
+                   "district": "Colonia", "county": "Municipio",
+                   "state": "Estado", "country": "País", "phone": "Teléfono",
+                   "email": "E-Mail", "company": "Nombre/Empresa",
+                   "rfc": "RFC", "street": "Calle", "noExt": "No. Exterior",
+                   "noInt": "No. Interior", "district": "Colonia",
+                   "state": "Estado", "county": "Municipio",
+                   "pc": "Codigo Postal", "phoneCompany": "Telefono",
+                   "emailCompany": "E-mail", "person1": "Acompañante 1",
+                   "person2": "Acompañante 2", "person3": "Acompañante 3",
+                   "person4": "Acompañante 4", "car": "Auto",
+                   "carColor": "Color", "carPlate": "Placas",
+                   "iD": "Identificación", "idNo": "No. de Identificación",
+                   "parkingHotel": "Estacionamiento", "parkingLot": "Pensión"}
+
+        layout = QVBoxLayout()
+        font = QFont()
+        font.setPointSize(8)
+        for key, value in varDict.items():
+            # Content Label is created
+            setattr(self, key, QLabel())
+            # Title Label is created
+            setattr(self, key + "Title", QLabel(value + ":"))
+            # Change Title font size
+            getattr(self, key + "Title").setFont(font)
+            # Layout is created
+            setattr(self, key + "Layout", QHBoxLayout())
+            # Title is added to layout
+            getattr(self, key + "Layout").addWidget(getattr(self,
+                                                    key + "Title"))
+            # Input field is added to layout
+            getattr(self, key + "Layout").addWidget(getattr(self, key))
+            # Add to Layout
+            layout.addStretch()
+            layout.addLayout(getattr(self, key + "Layout"))
+
+        #######################################################################
+        #######################################################################
+        # Cancel buttons setup
+
+        self.exit = QPushButton("Cancelar")
+
+        #######################################################################
+        #######################################################################
+        # setup del layout
+
+        layout.addStretch()
+        layout.addWidget(self.exit)
+
+        self.setLayout(layout)
+
+
 app = QApplication(sys.argv)
-app.setStyleSheet("""
-    QDialog {
-        background-color: white;
-        }
-    QLineEdit {
-        color: #5D5D5D;
-        background-color: white;
-        padding: 3px 8px;
-        font-weight: 500;
-        font-size: 14pt;
-        font-family:'Proxima Nova Soft';
-        border: 0;
-        outline: 0;
-        border: 1px solid #828282;
-        }
-    QLineEdit:focus {
-        padding: 0px 6px;
-        border: 3px solid #95ECFF;
-    }
-    QLabel {
-        color: #828282;
-        font-weight: 500;
-        font-size: 11pt;
-    }
-    """)
+# app.setStyleSheet("""
+#     QDialog {
+#         background-color: white;
+#         }
+#     QLineEdit {
+#         color: #5D5D5D;
+#         background-color: white;
+#         padding: 3px 8px;
+#         font-weight: 500;
+#         font-size: 14pt;
+#         font-family:'Proxima Nova Soft';
+#         border: 0;
+#         outline: 0;
+#         border: 1px solid #828282;
+#         }
+#     QLineEdit:focus {
+#         padding: 0px 6px;
+#         border: 3px solid #95ECFF;
+#     }
+#     QLabel {
+#         color: #828282;
+#         font-weight: 500;
+#         font-size: 11pt;
+#     }
+#     """)
 window = CheckIn()
 window.show()
 sys.exit(app.exec_())
